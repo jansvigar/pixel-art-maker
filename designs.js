@@ -1,9 +1,5 @@
 // Select color input
-var colorPicker = document.querySelector("#colorPicker");
-var pickedColor = "#000";
-colorPicker.addEventListener("change", function(e) {
-  pickedColor = e.target.value;
-});
+var colorPicker = document.querySelector("input#colorPicker");
 
 // Select size input
 var gridHeightInput = document.querySelector("#inputHeight");
@@ -12,29 +8,23 @@ var gridWidthInput = document.querySelector("#inputWidth");
 // When size is submitted by the user, call makeGrid()
 document.querySelector("#sizePicker").addEventListener("submit", function(e) {
   e.preventDefault();
-  makeGrid(gridHeightInput.value, gridWidthInput.value);
+  makeGrid();
 });
 
-function makeGrid(width, height) {
+function makeGrid() {
   var table = document.querySelector("#pixelCanvas");
-  clearCanvas(table);
-  for(var i = 0; i < height; i++) {
+  table.innerHTML = "";
+  for(var i = 0; i < gridHeightInput.value; i++) {
     var tr = document.createElement("tr");
-  	for(var j = 0; j < width; j++) {
+  	for(var j = 0; j < gridWidthInput.value; j++) {
     	var td = document.createElement("td");
       	tr.appendChild(td);
     }
     table.appendChild(tr);
   }
-  table.addEventListener("click", draw, true);
-}
-
-function clearCanvas(table) {
-  	table.removeEventListener("click", draw);
-	table.innerHTML = "";
+  table.addEventListener("click", draw);
 }
 
 function draw(e) {
-  	e.stopPropagation();
-	e.target.style.backgroundColor = pickedColor;
+	 if(e.target.nodeName === "TD") e.target.style.backgroundColor = colorPicker.value;
 }
